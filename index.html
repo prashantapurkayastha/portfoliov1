@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prashanta Purkayastha — Product Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #111118;
+  --bg-elevated: #16161f;
+  --text-primary: #f0efe9;
+  --text-secondary: #8a8a9a;
+  --text-muted: #55556a;
+  --accent: #e8c547;
+  --accent-dim: rgba(232, 197, 71, 0.12);
+  --accent-glow: rgba(232, 197, 71, 0.25);
+  --border: rgba(255,255,255,0.06);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* ===== NOISE OVERLAY ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ===== GEOMETRIC GRID BG ===== */
+.geo-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ===== SCROLL PROGRESS ===== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #f0d878);
+  z-index: 10000;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 20px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: rgba(10, 10, 15, 0.7);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.nav-logo span {
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  font-family: var(--font-mono);
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 48px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease forwards 0.3s;
+}
+
+.hero-tag::before {
+  content: '//';
+  margin-right: 10px;
+  opacity: 0.5;
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 0.9s ease forwards 0.5s;
+}
+
+.hero-name .accent-line {
+  display: block;
+  color: var(--accent);
+  position: relative;
+}
+
+.hero-name .accent-line::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  width: 60px;
+  height: 4px;
+  background: var(--accent);
+  transform: translateY(-50%);
+  animation: pulseWidth 2s ease-in-out infinite;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  max-width: 550px;
+  line-height: 1.7;
+  margin-bottom: 44px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.9s ease forwards 0.7s;
+}
+
+.hero-cta-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease forwards 0.9s;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary:hover {
+  background: #f0d878;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--accent-glow);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* Floating geometric shapes */
+.hero-shapes {
+  position: absolute;
+  right: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 400px;
+  height: 400px;
+  z-index: -1;
+}
+
+.geo-shape {
+  position: absolute;
+  border: 2px solid var(--accent-dim);
+  animation: floatSpin 12s ease-in-out infinite;
+}
+
+.geo-shape:nth-child(1) {
+  width: 250px; height: 250px;
+  top: 50px; left: 50px;
+  border-color: var(--accent-dim);
+  animation-duration: 14s;
+}
+
+.geo-shape:nth-child(2) {
+  width: 180px; height: 180px;
+  top: 120px; left: 120px;
+  transform: rotate(45deg);
+  border-color: rgba(232, 197, 71, 0.08);
+  animation-duration: 18s;
+  animation-direction: reverse;
+}
+
+.geo-shape:nth-child(3) {
+  width: 100px; height: 100px;
+  top: 80px; left: 200px;
+  border-radius: 50%;
+  border-color: rgba(232, 197, 71, 0.15);
+  animation-duration: 10s;
+}
+
+.geo-dot {
+  position: absolute;
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.geo-dot:nth-child(4) { top: 40px; left: 160px; animation-delay: 0.5s; }
+.geo-dot:nth-child(5) { top: 300px; left: 80px; animation-delay: 1s; }
+.geo-dot:nth-child(6) { top: 200px; left: 330px; animation-delay: 1.5s; }
+
+/* ===== SECTION COMMON ===== */
+section {
+  position: relative;
+  z-index: 1;
+  padding: 100px 48px;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-label::before {
+  content: '— ';
+  opacity: 0.5;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 48px;
+  line-height: 1.1;
+}
+
+/* ===== STATS BANNER ===== */
+.stats-banner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin: 0 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  padding: 48px 36px;
+  text-align: center;
+  transition: all 0.4s;
+}
+
+.stat-card:hover {
+  background: var(--bg-elevated);
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+/* ===== EXPERIENCE ===== */
+.experience-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.exp-item {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 48px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 48px;
+  transition: all 0.4s;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.exp-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.exp-item:hover {
+  border-color: rgba(232, 197, 71, 0.15);
+  background: var(--bg-elevated);
+}
+
+.exp-meta {
+  border-right: 1px solid var(--border);
+  padding-right: 40px;
+}
+
+.exp-company {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.exp-role {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.exp-date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.exp-content ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.exp-content li {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  padding-left: 20px;
+  position: relative;
+}
+
+.exp-content li::before {
+  content: '▹';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+.exp-highlight {
+  display: inline-block;
+  background: var(--accent-dim);
+  color: var(--accent);
+  padding: 1px 7px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  border-radius: 2px;
+}
+
+/* ===== SKILLS ===== */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2px;
+}
+
+.skill-category {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 40px;
+  transition: all 0.4s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.skill-category.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.skill-category:hover {
+  border-color: rgba(232, 197, 71, 0.15);
+  background: var(--bg-elevated);
+}
+
+.skill-icon {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.skill-cat-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  transition: all 0.3s;
+  letter-spacing: 0.02em;
+}
+
+.skill-tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* ===== ACHIEVEMENTS ===== */
+.achievements-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.achievement-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 44px;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.achievement-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.achievement-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.achievement-card:hover {
+  border-color: rgba(232, 197, 71, 0.15);
+  background: var(--bg-elevated);
+}
+
+.achievement-card:hover::before {
+  opacity: 1;
+}
+
+.achievement-icon {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.achievement-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.achievement-org {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+}
+
+.achievement-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ===== EDUCATION ===== */
+.education-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.edu-left {
+  padding: 56px;
+  border-right: 1px solid var(--border);
+}
+
+.edu-degree {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.edu-school {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.edu-cgpa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 8px 16px;
+}
+
+.edu-right {
+  padding: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.edu-location {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.edu-extra {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ===== CONTACT ===== */
+#contact {
+  border-top: 1px solid var(--border);
+}
+
+.contact-inner {
+  max-width: 700px;
+}
+
+.contact-intro {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.92rem;
+  transition: all 0.3s;
+  font-family: var(--font-body);
+}
+
+.contact-link:hover {
+  border-color: var(--accent);
+  background: var(--bg-elevated);
+  color: var(--accent);
+  transform: translateX(8px);
+}
+
+.contact-link-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  min-width: 70px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  position: relative;
+  z-index: 1;
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-text {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatSpin {
+  0%, 100% { transform: rotate(0deg) translate(0, 0); }
+  25% { transform: rotate(3deg) translate(8px, -12px); }
+  50% { transform: rotate(-2deg) translate(-5px, 8px); }
+  75% { transform: rotate(4deg) translate(10px, 5px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.5); }
+}
+
+@keyframes pulseWidth {
+  0%, 100% { width: 60px; opacity: 0.6; }
+  50% { width: 90px; opacity: 1; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CURSOR FOLLOWER ===== */
+.cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+  transform: translate(-50%, -50%);
+  transition: left 0.15s ease, top 0.15s ease;
+}
+
+/* ===== MOBILE NAV ===== */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 8px;
+}
+
+.nav-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  transition: all 0.3s;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .hero-shapes { display: none; }
+  .stats-banner { grid-template-columns: repeat(2, 1fr); }
+  .achievements-list { grid-template-columns: 1fr 1fr; }
+  .exp-item { grid-template-columns: 1fr; gap: 20px; }
+  .exp-meta { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 20px; }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .nav-links { 
+    display: none; 
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-links.active { display: flex; }
+  .nav-toggle { display: flex; }
+  
+  section, .hero { padding: 60px 24px; }
+  .stats-banner { margin: 0 24px; grid-template-columns: repeat(2, 1fr); }
+  .stat-card { padding: 28px 20px; }
+  .stat-number { font-size: 2rem; }
+  .achievements-list { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .education-block { grid-template-columns: 1fr; }
+  .edu-left { border-right: none; border-bottom: 1px solid var(--border); }
+  .exp-item { padding: 28px; }
+  footer { flex-direction: column; gap: 12px; padding: 24px; }
+  .cursor-glow { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="geo-grid"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">PP<span>.</span></div>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#achievements">Wins</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-tag">Product Manager — Mumbai, India</div>
+  <h1 class="hero-name">
+    Prashanta
+    <span class="accent-line">Purkayastha</span>
+  </h1>
+  <p class="hero-subtitle">
+    I build retail, omnichannel, and jewellery tech systems from scratch — from POS integrations to finance automation. I ship things that move metrics.
+  </p>
+  <div class="hero-cta-row">
+    <a href="#contact" class="btn-primary">Get in Touch →</a>
+    <a href="#experience" class="btn-secondary">View Work</a>
+  </div>
+  <div class="hero-shapes">
+    <div class="geo-shape"></div>
+    <div class="geo-shape"></div>
+    <div class="geo-shape"></div>
+    <div class="geo-dot"></div>
+    <div class="geo-dot"></div>
+    <div class="geo-dot"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-banner" id="stats">
+  <div class="stat-card">
+    <div class="stat-number" data-target="3">0</div>
+    <div class="stat-label">Product Roles</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number" data-target="15">0</div>
+    <div class="stat-label">Stores Supported</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number" data-target="1" data-suffix="M+">0</div>
+    <div class="stat-label">Monthly Transactions</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number" data-target="50" data-suffix="K+">0</div>
+    <div class="stat-label">Monthly Communications</div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Career Path</div>
+  <h2 class="section-title">Experience</h2>
+  <div class="experience-grid">
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-company">Aza Fashions</div>
+        <div class="exp-role">Product Manager</div>
+        <div class="exp-date">Sep 2024 – Present</div>
+      </div>
+      <div class="exp-content">
+        <ul>
+          <li>Launched LGD jewellery brand <strong>Araiya by Aza</strong> from scratch — end-to-end POS, website, backend order flows. Go-live across 5+ stores in <span class="exp-highlight">10 weeks</span>.</li>
+          <li>Owned omnichannel retail systems across POS, ERP, warehouse, vendor & finance platforms for <span class="exp-highlight">15+ stores</span> and ~1M monthly transactions.</li>
+          <li>Integrated Shopify with in-house ERP/POS for real-time inventory sync — reduced reconciliation mismatches by <span class="exp-highlight">~38%</span>.</li>
+          <li>Built Invoice OCR automation, cutting manual processing by <span class="exp-highlight">~55%</span> and improving turnaround by <span class="exp-highlight">~40%</span>.</li>
+          <li>Designed image-based product attribute & description tool — reduced cataloging effort by <span class="exp-highlight">~60%</span>.</li>
+          <li>Built Old Gold Receipt workflow and led Carat Scheme Plan setup supporting <span class="exp-highlight">1,000+ active customers</span>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-company">UniAcco</div>
+        <div class="exp-role">Product Manager</div>
+        <div class="exp-date">Feb 2023 – Present</div>
+      </div>
+      <div class="exp-content">
+        <ul>
+          <li>Built lead scoring model to prioritize high-intent leads — resulted in <span class="exp-highlight">3x higher conversion</span> vs low-score buckets.</li>
+          <li>Integrated Zoom & Calendly into counseling workflows — reduced no-shows by <span class="exp-highlight">~30%</span> and doubled qualified-to-counseling conversion.</li>
+          <li>Designed WhatsApp & Email automation using Gupshup, MoEngage, SendGrid — <span class="exp-highlight">50K+ monthly communications</span>.</li>
+          <li>Launched student document dashboard, cutting collection TAT from ~4 days to <span class="exp-highlight">~1.5 days</span>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-company">Motilal Oswal</div>
+        <div class="exp-role">Associate Product Manager</div>
+        <div class="exp-date">Mar 2022 – Feb 2023</div>
+      </div>
+      <div class="exp-content">
+        <ul>
+          <li>Owned onboarding, KYC & post-KYC journeys for a consumer investment app with <span class="exp-highlight">500K+ users</span>.</li>
+          <li>Analyzed behavioral funnels via Mixpanel & Smartlook — reduced drop-offs by <span class="exp-highlight">~12%</span> across key steps.</li>
+          <li>Collaborated cross-functionally to ship features from PRD to production within quarterly cycles.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Toolkit</div>
+  <h2 class="section-title">Skills & Tools</h2>
+  <div class="skills-grid">
+
+    <div class="skill-category">
+      <div class="skill-icon">◆</div>
+      <div class="skill-cat-title">Product & Strategy</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Product Strategy</span>
+        <span class="skill-tag">A/B Testing</span>
+        <span class="skill-tag">Product Launch</span>
+        <span class="skill-tag">Stakeholder Mgmt</span>
+        <span class="skill-tag">Cross-functional</span>
+        <span class="skill-tag">Problem Solving</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-icon">⬡</div>
+      <div class="skill-cat-title">Retail & Operations</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Omnichannel Systems</span>
+        <span class="skill-tag">POS & ERP</span>
+        <span class="skill-tag">Vendor Platforms</span>
+        <span class="skill-tag">Finance Automation</span>
+        <span class="skill-tag">Jewellery Ops</span>
+        <span class="skill-tag">Retail Tech</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-icon">◈</div>
+      <div class="skill-cat-title">Analytics & Data</div>
+      <div class="skill-tags">
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">Mixpanel</span>
+        <span class="skill-tag">Google Analytics</span>
+        <span class="skill-tag">Firebase</span>
+        <span class="skill-tag">Crashlytics</span>
+        <span class="skill-tag">AppsFlyer</span>
+        <span class="skill-tag">Smartlook</span>
+        <span class="skill-tag">Clarity</span>
+        <span class="skill-tag">Zoho Analytics</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-icon">▲</div>
+      <div class="skill-cat-title">Marketing & Engagement</div>
+      <div class="skill-tags">
+        <span class="skill-tag">MoEngage</span>
+        <span class="skill-tag">WebEngage</span>
+        <span class="skill-tag">CleverTap</span>
+        <span class="skill-tag">Gupshup</span>
+        <span class="skill-tag">SendGrid</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-icon">□</div>
+      <div class="skill-cat-title">Design & Workflow</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Jira</span>
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">Postman</span>
+        <span class="skill-tag">Shopify</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-label">Recognition</div>
+  <h2 class="section-title">Achievements</h2>
+  <div class="achievements-list">
+
+    <div class="achievement-card">
+      <div class="achievement-icon">★</div>
+      <div class="achievement-title">Aza Rising Star</div>
+      <div class="achievement-org">Aza Fashions · JAS 2025</div>
+      <div class="achievement-desc">Recognized for enabling end-to-end operations and successful launch of LGD jewellery brand Araiya by Aza.</div>
+    </div>
+
+    <div class="achievement-card">
+      <div class="achievement-icon">⚡</div>
+      <div class="achievement-title">Product Wizard</div>
+      <div class="achievement-org">UniAcco · 2023</div>
+      <div class="achievement-desc">Awarded for driving automation initiatives that improved conversion outcomes across core funnels.</div>
+    </div>
+
+    <div class="achievement-card">
+      <div class="achievement-icon">◆</div>
+      <div class="achievement-title">Ace of the Quarter</div>
+      <div class="achievement-org">Motilal Oswal · FY23 Q2</div>
+      <div class="achievement-desc">Honored for execution excellence and cross-team collaboration during the quarter.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">Foundation</div>
+  <h2 class="section-title">Education</h2>
+  <div class="education-block">
+    <div class="edu-left">
+      <div class="edu-degree">Bachelor of Engineering</div>
+      <div class="edu-school">Birla Institute of Technology, Mesra</div>
+      <div class="edu-cgpa">CGPA: 8.34</div>
+    </div>
+    <div class="edu-right">
+      <div class="edu-location">📍 Ranchi, Jharkhand</div>
+      <div class="edu-extra">Strong engineering foundation powering a product-first mindset — bridging technical depth with business impact.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Let's Connect</div>
+  <h2 class="section-title">Get in Touch</h2>
+  <div class="contact-inner">
+    <p class="contact-intro">
+      I'm always open to discussing product management, retail tech, or new opportunities. Feel free to reach out.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:prashanta.purkayastha@gmail.com" class="contact-link">
+        <span class="contact-link-label">Email</span>
+        prashanta.purkayastha@gmail.com
+      </a>
+      <a href="tel:+919101007489" class="contact-link">
+        <span class="contact-link-label">Phone</span>
+        +91 91010 07489
+      </a>
+      <a href="https://linkedin.com/in/prashanta-p" target="_blank" class="contact-link">
+        <span class="contact-link-label">LinkedIn</span>
+        linkedin.com/in/prashanta-p
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-text">© 2025 Prashanta Purkayastha</div>
+  <div class="footer-text">Built with precision.</div>
+</footer>
+
+<script>
+// Cursor glow
+const glow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+
+// Scroll progress
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  document.getElementById('scrollProgress').style.width = progress + '%';
+});
+
+// Counter animation
+function animateCounters() {
+  const counters = document.querySelectorAll('.stat-number');
+  counters.forEach(counter => {
+    const target = parseInt(counter.dataset.target);
+    const suffix = counter.dataset.suffix || '';
+    const duration = 1800;
+    const start = performance.now();
+
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      const current = Math.floor(eased * target);
+      counter.textContent = current + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// Intersection Observer for animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+
+      // Trigger counter animation for stats section
+      if (entry.target.id === 'stats') {
+        animateCounters();
+      }
+
+      // Stagger children animations
+      const children = entry.target.querySelectorAll('.exp-item, .skill-category, .achievement-card');
+      children.forEach((child, i) => {
+        setTimeout(() => child.classList.add('visible'), i * 120);
+      });
+    }
+  });
+}, { threshold: 0.15 });
+
+// Observe sections
+document.querySelectorAll('section, .stats-banner').forEach(s => observer.observe(s));
+document.querySelectorAll('.exp-item, .skill-category, .achievement-card').forEach(el => observer.observe(el));
+
+// Mobile nav toggle
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('active');
+});
+
+// Close nav on link click
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('active');
+  });
+});
+</script>
+
+</body>
+</html>
